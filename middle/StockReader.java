@@ -39,4 +39,13 @@ public interface StockReader
    */
   
   ImageIcon getImage(String pNum) throws StockException;
+
+
+ /**
+  * Returns productNo of the product in the stock list from the product description
+  * @param productDescription Product description
+  * @return productNo
+  * @throws StockException if issue
+  */
+  String getProductNum(String productDescription) throws StockException;
 }

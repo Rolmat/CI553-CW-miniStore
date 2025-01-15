@@ -105,4 +105,18 @@ public class F_StockR implements StockReader
     }
   }
 
+  public synchronized String getProductNum(String description) throws StockException{
+    DEBUG.trace("F_StockR:getProductNum()" );
+    try
+    {
+      if ( aR_StockR == null ) connect();
+      return aR_StockR.getProductNum( description );
+    }
+    catch ( RemoteException e )
+    {
+      aR_StockR = null;
+      throw new StockException( "Net: " + e.getMessage() );
+    }
+  }
+
 }

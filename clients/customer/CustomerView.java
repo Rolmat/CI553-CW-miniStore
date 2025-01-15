@@ -33,6 +33,8 @@ public class CustomerView implements Observer
   private final JScrollPane theSP      = new JScrollPane();
   private final JButton     theBtCheck = new JButton( Name.CHECK );
   private final JButton     theBtClear = new JButton( Name.CLEAR );
+  private final String[] searchChoices = {"PrCode","Text"};
+  private final JComboBox   searchType = new JComboBox(searchChoices);
 
   private Picture thePicture = new Picture(80,80);
   private StockReader theStock   = null;
@@ -67,21 +69,25 @@ public class CustomerView implements Observer
     pageTitle.setText( "Search products" );                        
     cp.add( pageTitle );
 
-    theBtCheck.setBounds( 16, 25+60*0, 80, 40 );    // Check button
+    searchType.setBounds(16,50,80,30);  //Search combo box
+    searchType.addActionListener(e -> searchDescription());
+    cp.add(searchType);                                   //add to canvas
+
+    theBtCheck.setBounds( 16, 50+40*1, 80, 30 );    // Check button
     theBtCheck.addActionListener(                   // Call back code
-      e -> cont.doCheck( theInput.getText() ) );
+      e -> cont.doCheck( theInput.getText(), String.valueOf(searchType.getSelectedItem())) );
     cp.add( theBtCheck );                           //  Add to canvas
 
-    theBtClear.setBounds( 16, 25+60*1, 80, 40 );    // Clear button
+    theBtClear.setBounds( 16, 50+40*2, 80, 30 );    // Clear button
     theBtClear.addActionListener(                   // Call back code
       e -> cont.doClear() );
     cp.add( theBtClear );                           //  Add to canvas
 
     theAction.setBounds( 110, 25 , 270, 20 );       // Message area
-    theAction.setText( " " );                       // blank
+    theAction.setText( "Enter Product Number" );                       // blank
     cp.add( theAction );                            //  Add to canvas
 
-    theInput.setBounds( 110, 50, 270, 40 );         // Product no area
+    theInput.setBounds( 110, 50, 270, 30 );         // Product no area
     theInput.setText("");                           // Blank
     cp.add( theInput );                             //  Add to canvas
     
@@ -91,7 +97,7 @@ public class CustomerView implements Observer
     cp.add( theSP );                                //  Add to canvas
     theSP.getViewport().add( theOutput );           //  In TextArea
 
-    thePicture.setBounds( 16, 25+60*2, 80, 80 );   // Picture area
+    thePicture.setBounds( 16, 50+40*3, 80, 80 );   // Picture area
     cp.add( thePicture );                           //  Add to canvas
     thePicture.clear();
     
@@ -119,7 +125,11 @@ public class CustomerView implements Observer
   {
     CustomerModel model  = (CustomerModel) modelC;
     String        message = (String) arg;
-    theAction.setText( message );
+    if(message.equals("Enter Product Number")){
+      searchDescription();
+    }else{
+      theAction.setText( message );
+    }
     ImageIcon image = model.getPicture();  // Image of product
     if ( image == null )
     {
@@ -129,6 +139,21 @@ public class CustomerView implements Observer
     }
     theOutput.setText( model.getBasket().getDetails() );
     theInput.requestFocus();               // Focus is here
+  }
+
+
+  /**
+   * Update theAction with the description of the selected search type
+   */
+  public void searchDescription(){
+    switch (String.valueOf(searchType.getSelectedItem())){
+      case "PrCode":
+        theAction.setText("Enter Product Number");
+        break;
+      case "Text":
+        theAction.setText("Enter Product Description");
+        break;
+    }
   }
 
 }

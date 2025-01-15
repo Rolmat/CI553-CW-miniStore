@@ -130,5 +130,28 @@ public class CustomerModel extends Observable
   {
     return new Basket();
   }
+
+
+  /**
+   * Checks a productNo from a product description
+   * @param  productDescription The product description
+   * Sends the productNum to doCheck to perform stock check
+   */
+  public void textCheck(String productDescription){
+    try{
+      String productNum = theStock.getProductNum(productDescription);//Get Product No
+      if(!productNum.isEmpty()){ //check if productNum is empty
+        doCheck(productNum);    //False send productNum to doCheck
+      }else{
+        String theAction = "Unknown product description"; //Inform product description unknown
+        setChanged(); notifyObservers(theAction);
+      }
+    } catch (StockException e) {
+      DEBUG.error("CustomerClient.textCheck()\n%s",
+              e.getMessage() );
+    }
+
+  }
+
 }
 

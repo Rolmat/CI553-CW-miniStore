@@ -115,4 +115,16 @@ public class      R_StockRW
   {
     aStockRW.modifyStock( product );
   }
+
+  /**
+   * Returns the productNo of the product in the stock list from a product description
+   * @param description The product description
+   * @return productNo
+   * @throws middle.StockException if underlying error
+   */
+  public synchronized String getProductNum( String description )
+          throws StockException
+  {
+    return aStockRW.getProductNum( description );
+  }
 }

@@ -65,4 +65,15 @@ public class      R_StockR
     return aStockR.getImage( pNum );
   }
 
+  /**
+   * Returns the productNo of the product in the stock list from a product description
+   * @param description The product description
+   * @return productNo
+   */
+  public synchronized String getProductNum( String description )
+          throws RemoteException, StockException
+  {
+    return aStockR.getProductNum( description );
+  }
+
 }

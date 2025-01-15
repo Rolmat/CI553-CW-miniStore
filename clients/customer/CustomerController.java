@@ -23,10 +23,16 @@ public class CustomerController
   /**
    * Check interaction from view
    * @param pn The product number to be checked
+   * @param searchType Type of search to be performed, product code or text
    */
-  public void doCheck( String pn )
+  public void doCheck( String pn ,String searchType)
   {
-    model.doCheck(pn);
+    if(searchType.equals("PrCode")){
+      model.doCheck(pn);
+    }else{
+      model.textCheck(pn);
+    }
+
   }
 
   /**

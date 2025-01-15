@@ -109,6 +109,31 @@ public class StockR implements StockReader
   }
 
   /**
+   * Checks the products description to find productNo
+   * @param productDescription The product description
+   * @return productNum
+   */
+  public synchronized String getProductNum(String productDescription) throws StockException{
+
+    try
+    {
+      String productNum="";
+      ResultSet rs   = getStatementObject().executeQuery(
+              "select productNo from ProductTable " +
+                      "  where  ProductTable.description like '%" + productDescription + "%'"
+      );
+      if(rs.next()){
+        productNum= rs.getString("productNo");
+      }
+      rs.close();
+      return  productNum;
+    } catch ( SQLException e )
+    {
+      throw new StockException( "SQL exists: " + e.getMessage() );
+    }
+  }
+
+  /**
    * Returns details about the product in the stock list.
    *  Assumed to exist in database.
    * @param pNum The product number
